@@ -1,0 +1,779 @@
+{
+  "meta": {
+    "title": "NEMO'S JOURNEY",
+    "subtitle": "A 10-Round Technical Quiz Challenge",
+    "totalRounds": 10,
+    "totalQuestions": 24,
+    "source": "Nemo_Journey_Full_Quiz.pdf"
+  },
+  "rounds": [
+    {
+      "id": 1,
+      "title": "Nemo Enters the Ocean",
+      "type": "Technical MCQ",
+      "depthMeters": 25,
+      "environment": "Sunlit Shallow Shallows & Coral Gateway",
+      "instruction": "Each question contains multiple conditions. Read every statement carefully before selecting an answer.",
+      "questions": [
+        {
+          "id": "Q1",
+          "roundId": 1,
+          "category": "NETWORKS — CIDR + HOST-RANGE TWIST",
+          "difficulty": "EASY",
+          "type": "mcq",
+          "prompt": "Given 172.16.35.77/27.\nConstraints: IPv4, standard CIDR, network/broadcast cannot be assigned, and /27 is fixed.\nWhich is correct for the network address, broadcast address, and number of usable host addresses?",
+          "codeSnippet": null,
+          "options": [
+            {
+              "key": "A",
+              "text": "Network 172.16.35.64; Broadcast 172.16.35.95; Usable = 30"
+            },
+            {
+              "key": "B",
+              "text": "Network 172.16.35.64; Broadcast 172.16.35.127; Usable = 62"
+            },
+            {
+              "key": "C",
+              "text": "Network 172.16.35.32; Broadcast 172.16.35.63; Usable = 30"
+            },
+            {
+              "key": "D",
+              "text": "Network 172.16.35.77; Broadcast 172.16.35.95; Usable = 31"
+            }
+          ],
+          "answer": "A",
+          "explanation": "For /27, block size is 32. 77 falls in block 64 to 95. Network address = 172.16.35.64, broadcast = 172.16.35.95. Usable hosts = 32 - 2 = 30."
+        },
+        {
+          "id": "Q2",
+          "roundId": 1,
+          "category": "SQL — FILTER ORDER + GROUP TWIST",
+          "difficulty": "MEDIUM",
+          "type": "mcq",
+          "prompt": "Employee rows are:\nA IT 80 Active; B IT 60 Active; C IT 90 Inactive; D CSE 70 Active; E CSE 100 Active; F CSE 50 Inactive; G ECE 85 Active; H ECE 75 Inactive.\n\nSELECT Dept, AVG(Salary), COUNT(*)\nFROM Employee\nWHERE Salary >= 70 AND Status='Active'\nGROUP BY Dept\nHAVING AVG(Salary) >= 85 AND COUNT(*) >= 2;\n\nConstraint: WHERE is applied before grouping and HAVING.\nWhich department(s) appear in the result?",
+          "codeSnippet": "SELECT Dept, AVG(Salary), COUNT(*)\nFROM Employee\nWHERE Salary >= 70 AND Status='Active'\nGROUP BY Dept\nHAVING AVG(Salary) >= 85 AND COUNT(*) >= 2;",
+          "options": [
+            {
+              "key": "A",
+              "text": "IT only"
+            },
+            {
+              "key": "B",
+              "text": "CSE only"
+            },
+            {
+              "key": "C",
+              "text": "IT and CSE"
+            },
+            {
+              "key": "D",
+              "text": "ECE only"
+            }
+          ],
+          "answer": "B",
+          "explanation": "WHERE filters rows before GROUP BY. With Salary >= 70 and Status='Active', CSE keeps D (70) and E (100), giving AVG = 85 and COUNT = 2, so CSE satisfies both HAVING conditions. IT has only A (80), and ECE has only G (85), so neither reaches COUNT(*) >= 2."
+        },
+        {
+          "id": "Q3",
+          "roundId": 1,
+          "category": "ALGORITHMS — THREE-LEVEL LOG TWIST",
+          "difficulty": "DIFFICULT",
+          "type": "mcq",
+          "prompt": "Consider the following code:\n\nConstraints: n is a power of 2; loop-control operations are Θ(1); overflow is ignored.\nWhat is the tight asymptotic time complexity?",
+          "codeSnippet": "i = 1;\nwhile (i <= n) {\n  j = i;\n  while (j <= n) {\n    k = 1;\n    while (k <= j) k = 2*k;\n    j = 2*j;\n  }\n  i = 2*i;\n}",
+          "options": [
+            {
+              "key": "A",
+              "text": "Θ(log n)"
+            },
+            {
+              "key": "B",
+              "text": "Θ((log n)²)"
+            },
+            {
+              "key": "C",
+              "text": "Θ((log n)³)"
+            },
+            {
+              "key": "D",
+              "text": "Θ(n log n)"
+            }
+          ],
+          "answer": "C",
+          "explanation": "Outer loop doubles i up to n (log n steps). Middle loop doubles j from i up to n (O(log n) steps). Inner loop doubles k up to j (log j = Θ(log n) steps). Total complexity is Θ((log n)³)."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Coral Reef",
+      "type": "Riddles / Logic",
+      "depthMeters": 80,
+      "environment": "Anemone Garden & Brain Coral Sanctuary",
+      "instruction": "Read the question carefully and type your answer. No options are provided.",
+      "questions": [
+        {
+          "id": "Q4",
+          "roundId": 2,
+          "category": "THE STACK THAT REMEMBERS THE FUTURE",
+          "difficulty": "EASY",
+          "type": "text_riddle",
+          "prompt": "A program evaluates:\n(A + B) * (C - D)\nBefore evaluation, the expression is transformed into:\nA B + C D - *\nThe evaluator can only perform operations on the most recently available operands. No operand can be taken from the middle.\nWhich data structure naturally supports this evaluation?",
+          "codeSnippet": "(A + B) * (C - D)  --->  A B + C D - *",
+          "placeholder": "Type data structure name...",
+          "answer": [
+            "stack"
+          ],
+          "explanation": "A Stack (LIFO - Last In First Out) naturally evaluates postfix (Reverse Polish) expressions by pushing operands and popping the top two when an operator is encountered."
+        },
+        {
+          "id": "Q5",
+          "roundId": 2,
+          "category": "THE TWO LOCKS THAT NEVER RELEASE",
+          "difficulty": "MEDIUM",
+          "type": "text_riddle",
+          "prompt": "T1:\nLOCK(A)\nLOCK(B)\nT2:\nLOCK(B)\nLOCK(A)\nNeither transaction is willing to release its first lock until it obtains the second. The database is not crashed. Both transactions are still running, but neither can ever proceed.\nWhat exactly has happened?",
+          "codeSnippet": "T1:             T2:\nLOCK(A)         LOCK(B)\nLOCK(B)         LOCK(A)",
+          "placeholder": "Type the phenomenon name...",
+          "answer": [
+            "deadlock"
+          ],
+          "explanation": "A Deadlock has occurred due to circular wait: T1 holds A and waits for B, while T2 holds B and waits for A."
+        },
+        {
+          "id": "Q6",
+          "roundId": 2,
+          "category": "THE QUERY THAT FINDS NOTHING",
+          "difficulty": "DIFFICULT",
+          "type": "text_riddle",
+          "prompt": "A table contains:\nname\n----------\nArun\nPriya\nNULL\nA programmer writes:\nSELECT * FROM Student WHERE name <> 'Arun';\nHe expects Priya and NULL, but only Priya appears.\nWhy doesn't the NULL row appear?",
+          "codeSnippet": "name\n----------\nArun\nPriya\nNULL\n\nSELECT * FROM Student WHERE name <> 'Arun';",
+          "placeholder": "Explain why or type key SQL concept (e.g. UNKNOWN, Three-Valued Logic, IS NULL)...",
+          "answer": [
+            "unknown",
+            "three valued logic",
+            "three-valued logic",
+            "3vl",
+            "is null"
+          ],
+          "explanation": "In SQL, any comparison with NULL (like NULL <> 'Arun') evaluates to UNKNOWN under Three-Valued Logic (3VL). The WHERE clause only returns rows where the predicate is TRUE."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Nemo Finds the Database Map",
+      "type": "SQL",
+      "depthMeters": 160,
+      "environment": "Sunken Galleon & Ancient Stone Tablets",
+      "instruction": "Read the question carefully and type the required query. No options are provided.",
+      "questions": [
+        {
+          "id": "Q7",
+          "roundId": 3,
+          "category": "CUSTOMERS WHO NEVER ORDER",
+          "difficulty": "SQL CHALLENGE",
+          "type": "sql",
+          "prompt": "You are given two tables, Customers and Orders. The Customers table contains customer details, and the Orders table contains orders placed by customers.\nTask: Write an SQL query to find the names of all customers who have never placed an order.\n\nTables:\nCustomers\nid | name\n\nOrders\nid | customerId\n\nExpected Output: Display only the customer names who have never placed an order.",
+          "codeSnippet": "Tables:\nCustomers:\n  id | name\n  1  | Joe\n  2  | Henry\n  3  | Sam\n  4  | Max\n\nOrders:\n  id | customerId\n  1  | 3\n  2  | 1",
+          "answer": "SQL_CUSTOMERS_NEVER_ORDER",
+          "explanation": "Using `NOT IN (SELECT customerId FROM Orders)` or `LEFT JOIN Orders ON Customers.id = Orders.customerId WHERE Orders.id IS NULL` returns customers Henry and Max who placed no orders."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Coding Cave",
+      "type": "Programming",
+      "depthMeters": 320,
+      "environment": "Bioluminescent Crystal Caverns",
+      "instruction": "Read the question carefully and type the required program. No options are provided.",
+      "questions": [
+        {
+          "id": "Q8",
+          "roundId": 4,
+          "category": "CAN PLACE FLOWERS",
+          "difficulty": "PROGRAMMING",
+          "type": "code",
+          "prompt": "You are given an integer array flowerbed where 0 represents an empty plot and 1 represents a plot where a flower is already planted. You are also given an integer n, representing the number of new flowers to plant. Flowers cannot be planted in two adjacent plots. Write a program to determine whether all n flowers can be planted without violating this rule.\n\nInput: flowerbed array and integer n\nOutput: Return/print true if all n flowers can be planted; otherwise return/print false.\n\nExample:\nInput:\nflowerbed = [1,0,0,0,1]\nn = 1\nOutput:\ntrue",
+          "codeSnippet": "function canPlaceFlowers(flowerbed, n) {\n  // Write your solution here\n}",
+          "answer": "canPlaceFlowers",
+          "explanation": "Iterate through the array. Whenever a plot is 0 and its neighbors (or boundaries) are 0, plant a flower, mark it 1, increment count, and check if count >= n.",
+          "hiddenTests": [
+            {
+              "input": {
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "n": 1
+              },
+              "expected": true
+            },
+            {
+              "input": {
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "n": 2
+              },
+              "expected": false
+            },
+            {
+              "input": {
+                "flowerbed": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "n": 2
+              },
+              "expected": true
+            },
+            {
+              "input": {
+                "flowerbed": [
+                  0
+                ],
+                "n": 1
+              },
+              "expected": true
+            }
+          ],
+          "functionName": "canPlaceFlowers"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Nemo Enters Shark Territory",
+      "type": "Technical MCQ",
+      "depthMeters": 650,
+      "environment": "Sunken Submarine Trench & Bruce's Domain",
+      "instruction": "Each question contains technical constraints or edge conditions. Choose the single best answer.",
+      "questions": [
+        {
+          "id": "Q9",
+          "roundId": 5,
+          "category": "OS — PRIORITY + ARRIVAL TWIST",
+          "difficulty": "EASY",
+          "type": "mcq",
+          "prompt": "P1=(arrival 0, burst 6, priority 3), P2=(1,2,1), P3=(2,1,2), P4=(4,3,1), P5=(5,2,2).\nRules: non-preemptive priority; smaller number = higher priority; a running process cannot be interrupted; equal priority → earlier arrival; arrivals during execution wait until the CPU is free.\nWhich order occurs?",
+          "codeSnippet": "P1: arrival=0, burst=6, priority=3\nP2: arrival=1, burst=2, priority=1\nP3: arrival=2, burst=1, priority=2\nP4: arrival=4, burst=3, priority=1\nP5: arrival=5, burst=2, priority=2",
+          "options": [
+            {
+              "key": "A",
+              "text": "P1 → P2 → P4 → P3 → P5"
+            },
+            {
+              "key": "B",
+              "text": "P1 → P2 → P3 → P4 → P5"
+            },
+            {
+              "key": "C",
+              "text": "P1 → P4 → P2 → P3 → P5"
+            },
+            {
+              "key": "D",
+              "text": "P1 → P3 → P2 → P4 → P5"
+            }
+          ],
+          "answer": "A",
+          "explanation": "At t=0, only P1 has arrived, so P1 runs from t=0 to 6 non-preemptively. At t=6, all other processes have arrived. Priority 1 processes (P2, P4): P2 arrived earlier (t=1 vs t=4), so P2 runs next, then P4. Next are Priority 2 processes (P3, P5): P3 arrived earlier (t=2 vs t=5), so P3 runs, then P5. Order: P1 → P2 → P4 → P3 → P5."
+        },
+        {
+          "id": "Q10",
+          "roundId": 5,
+          "category": "DBMS — FD + CLOSURE TWIST",
+          "difficulty": "MEDIUM",
+          "type": "mcq",
+          "prompt": "R(A,B,C,D,E) has FDs: A→B, B→C, CD→E, E→A. No other dependencies are assumed.\nConstraint: a candidate key must be minimal; determine attribute closure rather than assuming a single attribute is a key.\nWhich is a candidate key?",
+          "codeSnippet": "R(A, B, C, D, E)\nFDs:\nA → B\nB → C\nCD → E\nE → A",
+          "options": [
+            {
+              "key": "A",
+              "text": "A"
+            },
+            {
+              "key": "B",
+              "text": "B"
+            },
+            {
+              "key": "C",
+              "text": "CD"
+            },
+            {
+              "key": "D",
+              "text": "CDE"
+            }
+          ],
+          "answer": "C",
+          "explanation": "Notice D never appears on the right side of any FD, so every candidate key must contain D. Check (CD)⁺: CD → E (by CD→E) → A (by E→A) → B (by A→B). So (CD)⁺ = {A,B,C,D,E}. Neither C nor D alone determines all attributes, so CD is minimal and thus a candidate key."
+        },
+        {
+          "id": "Q11",
+          "roundId": 5,
+          "category": "COMPUTER ARCHITECTURE — CACHE BIT-FIELD TWIST",
+          "difficulty": "DIFFICULT",
+          "type": "mcq",
+          "prompt": "32-bit byte-addressable memory; direct-mapped cache; cache = 16 KB; block = 64 bytes; address = 0x12345678.\nConstraints: 1 KB = 1024 bytes; cache size is data only; cache is initially empty.\nWhich is correct for offset/index/tag bits and the cache index?",
+          "codeSnippet": "Memory: 32-bit byte-addressable\nCache: 16 KB data, direct-mapped\nBlock: 64 bytes\nAddress: 0x12345678",
+          "options": [
+            {
+              "key": "A",
+              "text": "6/8/18 bits; index 0x59"
+            },
+            {
+              "key": "B",
+              "text": "6/6/20 bits; index 0x59"
+            },
+            {
+              "key": "C",
+              "text": "5/8/19 bits; index 0x59"
+            },
+            {
+              "key": "D",
+              "text": "6/8/18 bits; index 0x78"
+            }
+          ],
+          "answer": "A",
+          "explanation": "Block size = 64 B = 2^6 B → 6 offset bits. Number of cache lines = 16 KB / 64 B = 16384 / 64 = 256 lines = 2^8 → 8 index bits. Tag bits = 32 - 8 - 6 = 18 bits. Address 0x12345678 has lower 16 bits = 0x5678 = 0101 0110 0111 1000b. Offset is bits [5:0] = 111000b. Index is bits [13:6] = 01011001b = 0x59. Thus 6/8/18 bits; index 0x59."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Jellyfish Logic Zone",
+      "type": "Riddles / Logic",
+      "depthMeters": 1200,
+      "environment": "Luminescent Violet Jellyfish Forest",
+      "instruction": "Read the question carefully and type your answer. No options are provided.",
+      "questions": [
+        {
+          "id": "Q12",
+          "roundId": 6,
+          "category": "THE SECURITY BREACH WITH NO PASSWORD",
+          "difficulty": "EASY",
+          "type": "text_riddle",
+          "prompt": "An employee receives an email containing a look-alike company login page. The page looks exactly like the company's login page. The employee enters a username, password, and OTP.\nThe attacker never guessed the password. The encryption wasn't broken. The employee voluntarily entered every credential.\nWhat attack is this?",
+          "codeSnippet": null,
+          "placeholder": "Type attack name...",
+          "answer": [
+            "phishing",
+            "credential phishing"
+          ],
+          "explanation": "Phishing (or Credential Phishing): an attack where a fraudulent website mimics a legitimate service to deceive users into disclosing sensitive credentials."
+        },
+        {
+          "id": "Q13",
+          "roundId": 6,
+          "category": "THE IMPOSSIBLE SCHEDULE",
+          "difficulty": "MEDIUM",
+          "type": "text_riddle",
+          "prompt": "A schedule contains:\nT1: READ(A)\nT2: READ(A)\nT1: WRITE(A)\nT2: WRITE(A)\nBoth transactions read the same original value of A. Both calculate a new value based on it. Both write their result. No syntax error occurs. No deadlock occurs. But one transaction's update effectively destroys the other's update.\nWhat classic concurrency problem is this?",
+          "codeSnippet": "T1: READ(A)\nT2: READ(A)\nT1: WRITE(A)\nT2: WRITE(A)",
+          "placeholder": "Type classic concurrency problem...",
+          "answer": [
+            "lost update",
+            "lost updates"
+          ],
+          "explanation": "The Lost Update problem occurs when two transactions read the same data concurrently and both update it based on the earlier read, overwriting each other's changes."
+        },
+        {
+          "id": "Q14",
+          "roundId": 6,
+          "category": "THE DATABASE THAT IS CORRECT — BUT STILL WRONG",
+          "difficulty": "DIFFICULT",
+          "type": "text_riddle",
+          "prompt": "Two transactions execute concurrently. Their individual operations are valid. No transaction crashes. No data violates the database constraints. Yet the final result is different from what would have happened if the transactions had executed one after another.\nThe database accepts both transactions. Nothing is syntactically wrong.\nWhat property has been violated?",
+          "codeSnippet": null,
+          "placeholder": "Type the violated database property...",
+          "answer": [
+            "serializability",
+            "serializable"
+          ],
+          "explanation": "Serializability (part of ACID Isolation): a concurrent execution schedule is serializable if its outcome is equivalent to some serial order of execution."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Lost Records",
+      "type": "SQL",
+      "depthMeters": 2500,
+      "environment": "Submerged Ancient Archives & Sunken Pillars",
+      "instruction": "Read the question carefully and type the required query. No options are provided.",
+      "questions": [
+        {
+          "id": "Q15",
+          "roundId": 7,
+          "category": "TREE NODE",
+          "difficulty": "SQL CHALLENGE",
+          "type": "sql",
+          "prompt": "You are given a table named Tree with columns id and p_id, where id represents the node ID and p_id represents the parent node ID.\nClassify every node as follows: Root if it has no parent; Inner if it has a parent and at least one child; Leaf if it has a parent but no children.\nTask: Write an SQL query to display each node's id and its corresponding node type.\n\nExpected Output Format:\nid | type",
+          "codeSnippet": "Table: Tree\n+----+------+\n| id | p_id |\n+----+------+\n| 1  | null |\n| 2  | 1    |\n| 3  | 1    |\n| 4  | 2    |\n| 5  | 2    |\n+----+------+",
+          "answer": "SQL_TREE_NODE",
+          "explanation": "Nodes with null p_id are 'Root'. Nodes whose id appears as a p_id in the table are 'Inner'. All remaining nodes are 'Leaf'."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Dory's Memory Challenge",
+      "type": "Programming / LeetCode",
+      "depthMeters": 4500,
+      "environment": "Electric Coral Memory Maze & Tang Sanctuary",
+      "instruction": "Read the question carefully and type the required program. No options are provided.",
+      "questions": [
+        {
+          "id": "Q16",
+          "roundId": 8,
+          "category": "MAXIMUM NUMBER OF FISH IN A GRID",
+          "difficulty": "PROGRAMMING / LEETCODE",
+          "type": "code",
+          "prompt": "You are given a 2D integer grid representing a fishing area. A cell containing 0 has no fish. A cell containing a positive number contains that many fish. The fisher can move between adjacent cells that contain fish and cannot move through cells containing 0.\nTask: Write a program to find the maximum number of fish the fisher can collect from any connected group of cells.\n\nInput: A 2D integer grid\nOutput: Return the maximum number of fish that can be collected.\n\nExample:\nInput:\n[[0,2,1,0],\n[4,0,0,3],\n[1,0,0,4],\n[0,3,2,0]]\nOutput:\n7",
+          "codeSnippet": "function findMaxFish(grid) {\n  // Write your solution here\n}",
+          "answer": "findMaxFish",
+          "explanation": "Use BFS or DFS across connected components of non-zero cells. The connected component with cells [0,2,1,0] left side has 2+1=3, bottom-left has 1+4=5, bottom has 3+2=5, and right side has 3+4=7. Maximum fish is 7.",
+          "hiddenTests": [
+            {
+              "input": {
+                "grid": [
+                  [
+                    0,
+                    2,
+                    1,
+                    0
+                  ],
+                  [
+                    4,
+                    0,
+                    0,
+                    3
+                  ],
+                  [
+                    1,
+                    0,
+                    0,
+                    4
+                  ],
+                  [
+                    0,
+                    3,
+                    2,
+                    0
+                  ]
+                ]
+              },
+              "expected": 7
+            },
+            {
+              "input": {
+                "grid": [
+                  [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                ]
+              },
+              "expected": 1
+            },
+            {
+              "input": {
+                "grid": [
+                  [
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0
+                  ]
+                ]
+              },
+              "expected": 0
+            }
+          ],
+          "functionName": "findMaxFish"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "The Final Reef",
+      "type": "Technical MCQ",
+      "depthMeters": 7500,
+      "environment": "The Mariana Drop-off & Deep Abyssal Ridge",
+      "instruction": "Each question contains technical constraints or edge conditions. Choose the single best answer.",
+      "questions": [
+        {
+          "id": "Q17",
+          "roundId": 9,
+          "category": "SQL — LEFT JOIN + COUNT TWIST",
+          "difficulty": "EASY",
+          "type": "mcq",
+          "prompt": "Student: (1,Nemo), (2,Dory), (3,Marlin), (4,Bruce).\nMarks: (1,DBMS,80), (1,OS,NULL), (2,DBMS,90), (2,CN,70), (3,DBMS,NULL).\n\nSELECT s.Name, COUNT(*) C1, COUNT(m.Mark) C2\nFROM Student s LEFT JOIN Marks m ON s.ID = m.Student_ID\nGROUP BY s.Name;\n\nConstraint: COUNT(m.Mark) ignores NULL, while COUNT(*) counts joined rows, including the NULL-extended row of a LEFT JOIN.\nWhich row is correct?",
+          "codeSnippet": "SELECT s.Name, COUNT(*) C1, COUNT(m.Mark) C2\nFROM Student s LEFT JOIN Marks m ON s.ID = m.Student_ID\nGROUP BY s.Name;",
+          "options": [
+            {
+              "key": "A",
+              "text": "Nemo: C1=2, C2=1"
+            },
+            {
+              "key": "B",
+              "text": "Dory: C1=2, C2=1"
+            },
+            {
+              "key": "C",
+              "text": "Marlin: C1=0, C2=0"
+            },
+            {
+              "key": "D",
+              "text": "Bruce: C1=0, C2=0"
+            }
+          ],
+          "answer": "A",
+          "explanation": "For Nemo: matches 2 rows in Marks ((1,DBMS,80) and (1,OS,NULL)). COUNT(*) = 2. COUNT(m.Mark) ignores NULL, counting only 80, so C2 = 1. Hence Nemo: C1=2, C2=1 is correct."
+        },
+        {
+          "id": "Q18",
+          "roundId": 9,
+          "category": "C + POINTERS — ALIASING TWIST",
+          "difficulty": "MEDIUM",
+          "type": "mcq",
+          "prompt": "Consider:\nint a[] = {2,4,6,8,10};\nint *p = a+1, *q = a+3;\n*p = *q;\nq--;\n*p += *q;\n\nConstraints: p and q point into the same array; pointer arithmetic is valid; no undefined behavior; only the shown statements modify the array.\nWhat is the final array?",
+          "codeSnippet": "int a[] = {2,4,6,8,10};\nint *p = a+1, *q = a+3;\n*p = *q;\nq--;\n*p += *q;",
+          "options": [
+            {
+              "key": "A",
+              "text": "{2,14,6,8,10}"
+            },
+            {
+              "key": "B",
+              "text": "{2,12,6,8,10}"
+            },
+            {
+              "key": "C",
+              "text": "{2,8,14,8,10}"
+            },
+            {
+              "key": "D",
+              "text": "{2,8,16,8,10}"
+            }
+          ],
+          "answer": "A",
+          "explanation": "Initially a = {2,4,6,8,10}. p points to a[1] (4), q points to a[3] (8). *p = *q makes a[1] = 8. q-- points to a[2] (6). *p += *q adds 6 to a[1], making a[1] = 8 + 6 = 14. Final array: {2,14,6,8,10}."
+        },
+        {
+          "id": "Q19",
+          "roundId": 9,
+          "category": "FINAL BOSS — MULTI-OPERATION STATE TWIST",
+          "difficulty": "DIFFICULT",
+          "type": "mcq",
+          "prompt": "Start: [8,3,8,5,1,3,6,1].\nStrict order: (1) remove duplicates, preserving first occurrence; (2) move the largest element to the beginning; (3) remove the last element; (4) insert 9 immediately after the first element greater than 4; (5) delete index 3 using 0-based indexing; (6) never sort.\nTwist: after step 2, the largest element is already first, so that step changes nothing.\nWhat is the final array?",
+          "codeSnippet": "Start: [8,3,8,5,1,3,6,1]\nOrder:\n1. Remove duplicates (preserve first)\n2. Move largest element to beginning\n3. Remove last element\n4. Insert 9 after first element > 4\n5. Delete index 3 (0-based)\n6. Never sort",
+          "options": [
+            {
+              "key": "A",
+              "text": "[8,9,3,1]"
+            },
+            {
+              "key": "B",
+              "text": "[8,9,3,5,1]"
+            },
+            {
+              "key": "C",
+              "text": "[8,3,9,1]"
+            },
+            {
+              "key": "D",
+              "text": "[9,8,3,1]"
+            }
+          ],
+          "answer": "A",
+          "explanation": "Step 1: [8,3,5,1,6]. Step 2: Largest is 8, already first -> [8,3,5,1,6]. Step 3: Remove last -> [8,3,5,1]. Step 4: First element > 4 is 8, insert 9 after it -> [8,9,3,5,1]. Step 5: Index 0 is 8, 1 is 9, 2 is 3, 3 is 5. Delete index 3 -> [8,9,3,1]."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Find Nemo — The Final Mission",
+      "type": "Final Challenge",
+      "depthMeters": 10994,
+      "environment": "The Challenger Deep & SafeZone Reunion Beacon",
+      "instruction": "The Nemo Rescue Protocol: a five-stage technical verification. The output of each stage becomes the required input for the next. Complete all five stages to generate the final reunion code.",
+      "questions": [
+        {
+          "stageNumber": 1,
+          "id": "Q20",
+          "title": "STAGE 1 — THE ENCRYPTION PROTOCOL",
+          "prompt": "Nemo's communication module encodes alphabetic characters using the numerical mapping A = 1, B = 2, C = 3, ..., Z = 26.\nAn intercepted transmission contains the sequence:\n3 – 15 – 18 – 1 – 12\nDecode the transmission and identify the message.",
+          "protocolOutputInstruction": "Determine the number of characters in the decoded message. Use this value as N for the next stage.",
+          "options": [
+            {
+              "key": "A",
+              "text": "CORAL"
+            },
+            {
+              "key": "B",
+              "text": "CORSA"
+            },
+            {
+              "key": "C",
+              "text": "COVAL"
+            },
+            {
+              "key": "D",
+              "text": "DORAL"
+            }
+          ],
+          "answer": "A",
+          "explanation": "3=C, 15=O, 18=R, 1=A, 12=L -> CORAL. Number of characters in CORAL is 5, so N = 5."
+        },
+        {
+          "stageNumber": 2,
+          "id": "Q21",
+          "title": "STAGE 2 — THE ARRAY PROCESSOR",
+          "prompt": "The value N obtained from Stage 1 is supplied to the following C program:\n\nAfter execution, what is the final value stored in \"a[i]\"?",
+          "codeSnippet": "int a[] = {4, 8, 3, 9, 6, 2};\nint i = N;\na[i] = a[i] + a[i-2];\nif (a[i] > 10)\n  a[i] -= 1;\nelse\n  a[i] += 4;",
+          "protocolOutputInstruction": "The resulting value is transferred to the database verification stage as ID = resulting value.",
+          "options": [
+            {
+              "key": "A",
+              "text": "7"
+            },
+            {
+              "key": "B",
+              "text": "9"
+            },
+            {
+              "key": "C",
+              "text": "10"
+            },
+            {
+              "key": "D",
+              "text": "11"
+            }
+          ],
+          "answer": "C",
+          "explanation": "With N = 5, i = 5. a[5] is initially 2, a[3] is 9. a[5] = 2 + 9 = 11. Since 11 > 10, a[5] -= 1, resulting in 10. Thus ID = 10."
+        },
+        {
+          "stageNumber": 3,
+          "id": "Q22",
+          "title": "STAGE 3 — THE DATABASE VERIFICATION",
+          "prompt": "Nemo's navigation database contains the following records:\n\nID | Location | Status\n4 | Coral Bay | Locked\n7 | Blue Cave | Locked\n10 | Nemo Reef | Unlocked\n12 | Dark Trench | Unlocked\n\nThe system executes the following query:\nSELECT Location\nFROM SafeZone\nWHERE ID = ?\nAND Status = 'Unlocked';\n\nThe parameter \"?\" is replaced with the ID generated in Stage 2.\nWhich location is returned by the query?",
+          "codeSnippet": "ID | Location    | Status\n4  | Coral Bay   | Locked\n7  | Blue Cave   | Locked\n10 | Nemo Reef   | Unlocked\n12 | Dark Trench | Unlocked\n\nSELECT Location\nFROM SafeZone\nWHERE ID = ?\nAND Status = 'Unlocked';",
+          "protocolOutputInstruction": "From the returned location, extract the number of characters in the word NEMO. Use this value as K for the next stage.",
+          "options": [
+            {
+              "key": "A",
+              "text": "Coral Bay"
+            },
+            {
+              "key": "B",
+              "text": "Blue Cave"
+            },
+            {
+              "key": "C",
+              "text": "Nemo Reef"
+            },
+            {
+              "key": "D",
+              "text": "Dark Trench"
+            }
+          ],
+          "answer": "C",
+          "explanation": "With ID = 10 and Status = 'Unlocked', the record is 'Nemo Reef'. The word 'NEMO' contains 4 characters, so K = 4."
+        },
+        {
+          "stageNumber": 4,
+          "id": "Q23",
+          "title": "STAGE 4 — THE ALPHANUMERIC TRANSFORMATION",
+          "prompt": "Using the value K obtained from Stage 3, the system applies the following transformation:\nR = (K × 6) + 2\nIf the resulting value exceeds 26, repeatedly subtract 26 until the value falls within the range 1–26.\nDetermine the final value of R.",
+          "codeSnippet": "R = (K * 6) + 2;\nwhile (R > 26) {\n  R -= 26;\n}",
+          "protocolOutputInstruction": "Convert R into its corresponding alphabetic character using 1 = A, 2 = B, ..., 26 = Z. Designate the resulting character as L.",
+          "options": [
+            {
+              "key": "A",
+              "text": "24"
+            },
+            {
+              "key": "B",
+              "text": "26"
+            },
+            {
+              "key": "C",
+              "text": "28"
+            },
+            {
+              "key": "D",
+              "text": "30"
+            }
+          ],
+          "answer": "B",
+          "explanation": "K = 4. R = (4 × 6) + 2 = 24 + 2 = 26. 26 is already within 1–26. The 26th letter is 'Z', so L = 'Z'."
+        },
+        {
+          "stageNumber": 5,
+          "id": "Q24",
+          "title": "STAGE 5 — THE FINAL REUNION CODE",
+          "prompt": "The final communication module receives the following three outputs generated during the protocol: N (output from Stage 1), V (output from Stage 2), and L (character generated in Stage 4).\n\nThe module constructs the final reunion code as follows: Step 1 — convert N into its corresponding alphabetic character. Step 2 — retain V as its numerical value. Step 3 — append the character L.\n\nThe resulting format is: [Alphabet] – [Number] – [Alphabet]\nWhich code should be transmitted to Nemo?",
+          "codeSnippet": "Protocol Inputs:\nN = 5 (from Stage 1)\nV = 10 (from Stage 2)\nL = 'Z' (from Stage 4)\n\nFormat: [Alphabet] - [Number] - [Alphabet]",
+          "protocolOutputInstruction": "Transmit the verified rescue code to complete the mission and reunite with Nemo!",
+          "options": [
+            {
+              "key": "A",
+              "text": "E-10-Z"
+            },
+            {
+              "key": "B",
+              "text": "E-9-Z"
+            },
+            {
+              "key": "C",
+              "text": "F-10-Z"
+            },
+            {
+              "key": "D",
+              "text": "E-10-Y"
+            }
+          ],
+          "answer": "A",
+          "explanation": "Step 1: N = 5 corresponds to 'E'. Step 2: V = 10 is retained as 10. Step 3: L is 'Z'. Format is E-10-Z."
+        }
+      ]
+    }
+  ]
+}
