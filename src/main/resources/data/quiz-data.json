@@ -121,7 +121,9 @@
           "prompt": "A program evaluates:\n(A + B) * (C - D)\nBefore evaluation, the expression is transformed into:\nA B + C D - *\nThe evaluator can only perform operations on the most recently available operands. No operand can be taken from the middle.\nWhich data structure naturally supports this evaluation?",
           "codeSnippet": "(A + B) * (C - D)  --->  A B + C D - *",
           "placeholder": "Type data structure name...",
-          "answer": ["stack"],
+          "answer": [
+            "stack"
+          ],
           "explanation": "A Stack (LIFO - Last In First Out) naturally evaluates postfix (Reverse Polish) expressions by pushing operands and popping the top two when an operator is encountered."
         },
         {
@@ -133,7 +135,9 @@
           "prompt": "T1:\nLOCK(A)\nLOCK(B)\nT2:\nLOCK(B)\nLOCK(A)\nNeither transaction is willing to release its first lock until it obtains the second. The database is not crashed. Both transactions are still running, but neither can ever proceed.\nWhat exactly has happened?",
           "codeSnippet": "T1:             T2:\nLOCK(A)         LOCK(B)\nLOCK(B)         LOCK(A)",
           "placeholder": "Type the phenomenon name...",
-          "answer": ["deadlock"],
+          "answer": [
+            "deadlock"
+          ],
           "explanation": "A Deadlock has occurred due to circular wait: T1 holds A and waits for B, while T2 holds B and waits for A."
         },
         {
@@ -198,31 +202,79 @@
           "hiddenTests": [
             {
               "input": {
-                "flowerbed": [1, 0, 0, 0, 1],
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
                 "n": 1
               },
               "expected": true
             },
             {
               "input": {
-                "flowerbed": [1, 0, 0, 0, 1],
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
                 "n": 2
               },
               "expected": false
             },
             {
               "input": {
-                "flowerbed": [0, 0, 1, 0, 0],
+                "flowerbed": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
                 "n": 2
               },
               "expected": true
             },
             {
               "input": {
-                "flowerbed": [0],
+                "flowerbed": [
+                  0
+                ],
                 "n": 1
               },
               "expected": true
+            }
+          ],
+          "sampleTests": [
+            {
+              "input": {
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "n": 1
+              },
+              "expected": true
+            },
+            {
+              "input": {
+                "flowerbed": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "n": 2
+              },
+              "expected": false
             }
           ],
           "functionName": "canPlaceFlowers"
@@ -343,7 +395,10 @@
           "prompt": "An employee receives an email containing a look-alike company login page. The page looks exactly like the company's login page. The employee enters a username, password, and OTP.\nThe attacker never guessed the password. The encryption wasn't broken. The employee voluntarily entered every credential.\nWhat attack is this?",
           "codeSnippet": null,
           "placeholder": "Type attack name...",
-          "answer": ["phishing", "credential phishing"],
+          "answer": [
+            "phishing",
+            "credential phishing"
+          ],
           "explanation": "Phishing (or Credential Phishing): an attack where a fraudulent website mimics a legitimate service to deceive users into disclosing sensitive credentials."
         },
         {
@@ -355,7 +410,10 @@
           "prompt": "A schedule contains:\nT1: READ(A)\nT2: READ(A)\nT1: WRITE(A)\nT2: WRITE(A)\nBoth transactions read the same original value of A. Both calculate a new value based on it. Both write their result. No syntax error occurs. No deadlock occurs. But one transaction's update effectively destroys the other's update.\nWhat classic concurrency problem is this?",
           "codeSnippet": "T1: READ(A)\nT2: READ(A)\nT1: WRITE(A)\nT2: WRITE(A)",
           "placeholder": "Type classic concurrency problem...",
-          "answer": ["lost update", "lost updates"],
+          "answer": [
+            "lost update",
+            "lost updates"
+          ],
           "explanation": "The Lost Update problem occurs when two transactions read the same data concurrently and both update it based on the earlier read, overwriting each other's changes."
         },
         {
@@ -367,7 +425,10 @@
           "prompt": "Two transactions execute concurrently. Their individual operations are valid. No transaction crashes. No data violates the database constraints. Yet the final result is different from what would have happened if the transactions had executed one after another.\nThe database accepts both transactions. Nothing is syntactically wrong.\nWhat property has been violated?",
           "codeSnippet": null,
           "placeholder": "Type the violated database property...",
-          "answer": ["serializability", "serializable"],
+          "answer": [
+            "serializability",
+            "serializable"
+          ],
           "explanation": "Serializability (part of ACID Isolation): a concurrent execution schedule is serializable if its outcome is equivalent to some serial order of execution."
         }
       ]
@@ -415,10 +476,30 @@
             {
               "input": {
                 "grid": [
-                  [0, 2, 1, 0],
-                  [4, 0, 0, 3],
-                  [1, 0, 0, 4],
-                  [0, 3, 2, 0]
+                  [
+                    0,
+                    2,
+                    1,
+                    0
+                  ],
+                  [
+                    4,
+                    0,
+                    0,
+                    3
+                  ],
+                  [
+                    1,
+                    0,
+                    0,
+                    4
+                  ],
+                  [
+                    0,
+                    3,
+                    2,
+                    0
+                  ]
                 ]
               },
               "expected": 7
@@ -426,10 +507,30 @@
             {
               "input": {
                 "grid": [
-                  [1, 0, 0, 0],
-                  [0, 0, 0, 0],
-                  [0, 0, 0, 0],
-                  [0, 0, 0, 1]
+                  [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
                 ]
               },
               "expected": 1
@@ -437,14 +538,86 @@
             {
               "input": {
                 "grid": [
-                  [0, 0, 0],
-                  [0, 0, 0]
+                  [
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0
+                  ]
                 ]
               },
               "expected": 0
             }
           ],
-          "functionName": "findMaxFish"
+          "functionName": "findMaxFish",
+          "sampleTests": [
+            {
+              "input": {
+                "grid": [
+                  [
+                    0,
+                    2,
+                    1,
+                    0
+                  ],
+                  [
+                    4,
+                    0,
+                    0,
+                    3
+                  ],
+                  [
+                    1,
+                    0,
+                    0,
+                    4
+                  ],
+                  [
+                    0,
+                    3,
+                    2,
+                    0
+                  ]
+                ]
+              },
+              "expected": 7
+            },
+            {
+              "input": {
+                "grid": [
+                  [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                ]
+              },
+              "expected": 1
+            }
+          ]
         }
       ]
     },

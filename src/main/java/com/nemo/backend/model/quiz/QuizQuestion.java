@@ -16,6 +16,8 @@ public class QuizQuestion {
     private String codeSnippet;
     private String placeholder;
 
+    private List<JsonNode> sampleTests;
+
     private List<QuizOption> options;
 
     private JsonNode answer;
@@ -153,4 +155,12 @@ public class QuizQuestion {
     public void setProtocolOutputInstruction(String protocolOutputInstruction) {
         this.protocolOutputInstruction = protocolOutputInstruction;
     }
+
+    public List<JsonNode> getSampleTests() {
+    return sampleTests;
+}
+
+public void setSampleTests(List<JsonNode> sampleTests) {
+    this.sampleTests = sampleTests;
+}
 }

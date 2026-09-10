@@ -226,7 +226,8 @@ public class QuestionController {
                 question.getPlaceholder(),
                 question.getOptions(),
                 question.getFunctionName(),
-                question.getProtocolOutputInstruction()
+                question.getProtocolOutputInstruction(),
+                question.getSampleTests()
         );
     }
 }

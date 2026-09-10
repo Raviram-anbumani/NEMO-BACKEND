@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.nemo.backend.model.quiz.QuizOption;
 
+import tools.jackson.databind.JsonNode;
+
 public class QuestionResponse {
 
     private String id;
@@ -19,6 +21,7 @@ public class QuestionResponse {
     private List<QuizOption> options;
     private String functionName;
     private String protocolOutputInstruction;
+    private List<JsonNode> sampleTests;
 
     public QuestionResponse(
             String id,
@@ -33,7 +36,8 @@ public class QuestionResponse {
             String placeholder,
             List<QuizOption> options,
             String functionName,
-            String protocolOutputInstruction
+            String protocolOutputInstruction,
+            List<JsonNode> sampleTests
     ) {
         this.id = id;
         this.roundId = roundId;
@@ -48,6 +52,7 @@ public class QuestionResponse {
         this.options = options;
         this.functionName = functionName;
         this.protocolOutputInstruction = protocolOutputInstruction;
+        this.sampleTests = sampleTests;
     }
 
     public String getId() {
@@ -100,5 +105,9 @@ public class QuestionResponse {
 
     public String getProtocolOutputInstruction() {
         return protocolOutputInstruction;
+    }
+
+    public List<JsonNode> getSampleTests() {
+        return sampleTests;
     }
 }
