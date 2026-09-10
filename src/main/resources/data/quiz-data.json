@@ -115,7 +115,7 @@
         {
           "id": "Q4",
           "roundId": 2,
-          "category": "THE STACK THAT REMEMBERS THE FUTURE",
+          "category": "REMEMBERS THE FUTURE",
           "difficulty": "EASY",
           "type": "text_riddle",
           "prompt": "A program evaluates:\n(A + B) * (C - D)\nBefore evaluation, the expression is transformed into:\nA B + C D - *\nThe evaluator can only perform operations on the most recently available operands. No operand can be taken from the middle.\nWhich data structure naturally supports this evaluation?",
