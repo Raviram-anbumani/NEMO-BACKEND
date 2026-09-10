@@ -146,7 +146,8 @@ public class CodeVerificationService {
         CodeVerificationResult result =
                 judge0Service.verifyCode(
                         question.getId(),
-                        request.getCode()
+                        request.getCode(),
+                        request.getLanguage()
                 );
 
         boolean correct = result.success();

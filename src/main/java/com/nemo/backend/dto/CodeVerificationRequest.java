@@ -5,6 +5,10 @@ public class CodeVerificationRequest {
     private String sessionId;
     private String questionId;
     private String code;
+    private String language;
+
+    public CodeVerificationRequest() {
+    }
 
     public String getSessionId() {
         return sessionId;
@@ -28,5 +32,13 @@ public class CodeVerificationRequest {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
