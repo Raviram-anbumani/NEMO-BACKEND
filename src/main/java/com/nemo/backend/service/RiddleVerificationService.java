@@ -75,13 +75,17 @@ public class RiddleVerificationService {
                         request.getQuestionId()
                 );
 
-        if (!"text_riddle".equalsIgnoreCase(question.getType())) {
+        if (!"text_riddle".equalsIgnoreCase(
+                question.getType()
+        )) {
             throw new IllegalArgumentException(
                     "Question is not a riddle"
             );
         }
 
-        // Backend enforces sequential round unlocking.
+        /*
+         * Backend-enforced sequential progression.
+         */
         if (!quizProgressionService.isQuestionUnlocked(
                 session,
                 question
@@ -103,6 +107,7 @@ public class RiddleVerificationService {
                                     new QuestionProgress();
 
                             newProgress.setSession(session);
+
                             newProgress.setQuestionId(
                                     question.getId()
                             );
@@ -110,7 +115,10 @@ public class RiddleVerificationService {
                             return newProgress;
                         });
 
-        // Already solved — don't increment attempts again.
+        /*
+         * Once correctly solved, the question remains
+         * permanently solved for this session.
+         */
         if (Boolean.TRUE.equals(progress.getCorrect())) {
 
             return buildResponse(
@@ -122,6 +130,9 @@ public class RiddleVerificationService {
             );
         }
 
+        /*
+         * Every actual submission counts as an attempt.
+         */
         progress.setAttemptCount(
                 progress.getAttemptCount() + 1
         );
@@ -170,15 +181,21 @@ public class RiddleVerificationService {
         String submitted =
                 normalize(submittedAnswer);
 
-        // Single accepted answer.
+        /*
+         * Single accepted answer.
+         */
         if (expectedAnswer.isTextual()) {
 
             return submitted.equals(
-                    normalize(expectedAnswer.asText())
+                    normalize(
+                            expectedAnswer.asText()
+                    )
             );
         }
 
-        // Multiple accepted answers.
+        /*
+         * Multiple accepted answers.
+         */
         if (expectedAnswer.isArray()) {
 
             for (JsonNode answer : expectedAnswer) {
@@ -226,19 +243,30 @@ public class RiddleVerificationService {
                         .map(QuestionProgress::getQuestionId)
                         .toList();
 
+        /*
+         * Determine completed rounds.
+         *
+         * Normal rounds use "questions".
+         * Round 10 uses "stages".
+         */
         List<Integer> completedRounds =
                 quizDataService.getRounds()
                         .stream()
-                        .filter(round ->
-                                round.getQuestions()
-                                        .stream()
-                                        .allMatch(question ->
-                                                completedQuestionIds
-                                                        .contains(
-                                                                question.getId()
-                                                        )
-                                        )
-                        )
+                        .filter(round -> {
+
+                            List<QuizQuestion> roundQuestions =
+                                    getRoundQuestions(round);
+
+                            return roundQuestions != null &&
+                                    !roundQuestions.isEmpty() &&
+                                    roundQuestions.stream()
+                                            .allMatch(question ->
+                                                    completedQuestionIds
+                                                            .contains(
+                                                                    question.getId()
+                                                            )
+                                            );
+                        })
                         .map(QuizRound::getId)
                         .toList();
 
@@ -252,5 +280,24 @@ public class RiddleVerificationService {
                 completedQuestionIds,
                 completedRounds
         );
+    }
+
+    private List<QuizQuestion> getRoundQuestions(
+            QuizRound round
+    ) {
+
+        if (round.getQuestions() != null &&
+                !round.getQuestions().isEmpty()) {
+
+            return round.getQuestions();
+        }
+
+        if (round.getStages() != null &&
+                !round.getStages().isEmpty()) {
+
+            return round.getStages();
+        }
+
+        return List.of();
     }
 }

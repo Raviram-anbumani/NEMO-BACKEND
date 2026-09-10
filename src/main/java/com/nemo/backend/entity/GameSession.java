@@ -17,17 +17,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "game_sessions")
+@Table(
+        name = "game_sessions",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_game_session_player",
+                        columnNames = "player_id"
+                )
+        }
+)
 public class GameSession {
 
     @Id
     @Column(length = 36)
     private String id;
 
+    /*
+     * One player can have only ONE game session.
+     *
+     * This is the database-level protection for:
+     * "One participant/email = one permanent NEMO session."
+     */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id", nullable = false, unique = true)
     private Player player;
 
     @Column(name = "started_at", nullable = false)
@@ -72,6 +87,7 @@ public class GameSession {
 
     @PrePersist
     protected void onCreate() {
+
         if (id == null) {
             id = UUID.randomUUID().toString();
         }
@@ -86,6 +102,10 @@ public class GameSession {
 
         if (totalActiveTimeMs == null) {
             totalActiveTimeMs = 0L;
+        }
+
+        if (round10Stage == null) {
+            round10Stage = 0;
         }
     }
 

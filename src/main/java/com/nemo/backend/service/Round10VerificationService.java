@@ -10,6 +10,7 @@ import com.nemo.backend.dto.VerificationResponse;
 import com.nemo.backend.entity.GameSession;
 import com.nemo.backend.entity.QuestionProgress;
 import com.nemo.backend.model.quiz.QuizQuestion;
+import com.nemo.backend.model.quiz.QuizRound;
 import com.nemo.backend.repository.GameSessionRepository;
 import com.nemo.backend.repository.QuestionProgressRepository;
 
@@ -19,15 +20,18 @@ public class Round10VerificationService {
     private final GameSessionRepository gameSessionRepository;
     private final QuestionProgressRepository questionProgressRepository;
     private final QuizDataService quizDataService;
+    private final QuizProgressionService quizProgressionService;
 
     public Round10VerificationService(
             GameSessionRepository gameSessionRepository,
             QuestionProgressRepository questionProgressRepository,
-            QuizDataService quizDataService
+            QuizDataService quizDataService,
+            QuizProgressionService quizProgressionService
     ) {
         this.gameSessionRepository = gameSessionRepository;
         this.questionProgressRepository = questionProgressRepository;
         this.quizDataService = quizDataService;
+        this.quizProgressionService = quizProgressionService;
     }
 
     @Transactional
@@ -45,6 +49,14 @@ public class Round10VerificationService {
         if (stage < 1 || stage > 5) {
             throw new IllegalArgumentException(
                     "Invalid Round 10 stage"
+            );
+        }
+
+        if (request.getSessionId() == null ||
+                request.getSessionId().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Session ID is required"
             );
         }
 
@@ -72,7 +84,17 @@ public class Round10VerificationService {
         }
 
         /*
-         * Stage 1 requires round 10 stage = 0.
+         * Round 10 is available only after Rounds 1-9
+         * have been completely solved.
+         */
+        if (!arePreviousRoundsCompleted(session)) {
+            throw new IllegalArgumentException(
+                    "Round 10 is locked. Complete Rounds 1-9 first."
+            );
+        }
+
+        /*
+         * Stage 1 requires round10Stage = 0.
          * Stage 2 requires stage 1 completed, etc.
          */
         if (session.getRound10Stage() != stage - 1) {
@@ -86,6 +108,12 @@ public class Round10VerificationService {
         QuizQuestion question =
                 quizDataService.getQuestion(questionId);
 
+        if (question == null) {
+            throw new IllegalArgumentException(
+                    "Round 10 question not found: " + questionId
+            );
+        }
+
         QuestionProgress progress =
                 questionProgressRepository
                         .findBySessionAndQuestionId(
@@ -98,9 +126,7 @@ public class Round10VerificationService {
                                     new QuestionProgress();
 
                             newProgress.setSession(session);
-                            newProgress.setQuestionId(
-                                    questionId
-                            );
+                            newProgress.setQuestionId(questionId);
 
                             return newProgress;
                         });
@@ -137,10 +163,7 @@ public class Round10VerificationService {
         progress.setCorrect(correct);
 
         if (correct) {
-            updateRound10State(
-                    session,
-                    stage
-            );
+            updateRound10State(session, stage);
         }
 
         questionProgressRepository.save(progress);
@@ -177,18 +200,30 @@ public class Round10VerificationService {
         );
     }
 
+    private boolean arePreviousRoundsCompleted(
+            GameSession session
+    ) {
+
+        for (int roundId = 1; roundId <= 9; roundId++) {
+
+            if (!quizProgressionService.isRoundCompleted(
+                    session,
+                    roundId
+            )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private String getExpectedAnswer(int stage) {
 
         return switch (stage) {
-
             case 1 -> "A";
-
             case 2 -> "D";
-
             case 3 -> "C";
-
             case 4 -> "B";
-
             case 5 -> "A";
 
             default ->
@@ -271,7 +306,7 @@ public class Round10VerificationService {
                                                         )
                                         )
                         )
-                        .map(round -> round.getId())
+                        .map(QuizRound::getId)
                         .toList();
 
         return new VerificationResponse(
@@ -287,14 +322,18 @@ public class Round10VerificationService {
     }
 
     private List<QuizQuestion> getRoundQuestions(
-            com.nemo.backend.model.quiz.QuizRound round
+            QuizRound round
     ) {
 
-        if (round.getQuestions() != null) {
+        if (round.getQuestions() != null &&
+                !round.getQuestions().isEmpty()) {
+
             return round.getQuestions();
         }
 
-        if (round.getStages() != null) {
+        if (round.getStages() != null &&
+                !round.getStages().isEmpty()) {
+
             return round.getStages();
         }
 

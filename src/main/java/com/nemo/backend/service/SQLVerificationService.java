@@ -84,7 +84,6 @@ public class SQLVerificationService {
                 );
 
         if (session.getStatus() != GameSession.Status.ACTIVE) {
-
             throw new IllegalArgumentException(
                     "Session is not active"
             );
@@ -98,17 +97,18 @@ public class SQLVerificationService {
         if (!"sql".equalsIgnoreCase(
                 question.getType()
         )) {
-
             throw new IllegalArgumentException(
                     "Question is not an SQL question"
             );
         }
 
+        /*
+         * Backend-authoritative progression check.
+         */
         if (!quizProgressionService.isQuestionUnlocked(
                 session,
                 question
         )) {
-
             throw new IllegalArgumentException(
                     "Question is currently locked"
             );
@@ -126,6 +126,7 @@ public class SQLVerificationService {
                                     new QuestionProgress();
 
                             newProgress.setSession(session);
+
                             newProgress.setQuestionId(
                                     question.getId()
                             );
@@ -133,6 +134,9 @@ public class SQLVerificationService {
                             return newProgress;
                         });
 
+        /*
+         * A correctly completed question stays completed.
+         */
         if (Boolean.TRUE.equals(
                 progress.getCorrect()
         )) {
@@ -147,6 +151,9 @@ public class SQLVerificationService {
             );
         }
 
+        /*
+         * Every actual submission counts as an attempt.
+         */
         progress.setAttemptCount(
                 progress.getAttemptCount() + 1
         );
@@ -212,12 +219,10 @@ public class SQLVerificationService {
     ) {
 
         if ("Q7".equalsIgnoreCase(questionId)) {
-
             return matchesQ7(rows);
         }
 
         if ("Q15".equalsIgnoreCase(questionId)) {
-
             return matchesQ15(rows);
         }
 
@@ -339,19 +344,30 @@ public class SQLVerificationService {
                         .map(QuestionProgress::getQuestionId)
                         .toList();
 
+        /*
+         * Determine completed rounds.
+         *
+         * Normal rounds use "questions".
+         * Round 10 uses "stages".
+         */
         List<Integer> completedRounds =
                 quizDataService.getRounds()
                         .stream()
-                        .filter(round ->
-                                round.getQuestions()
-                                        .stream()
-                                        .allMatch(question ->
-                                                completedQuestionIds
-                                                        .contains(
-                                                                question.getId()
-                                                        )
-                                        )
-                        )
+                        .filter(round -> {
+
+                            List<QuizQuestion> roundQuestions =
+                                    getRoundQuestions(round);
+
+                            return roundQuestions != null &&
+                                    !roundQuestions.isEmpty() &&
+                                    roundQuestions.stream()
+                                            .allMatch(question ->
+                                                    completedQuestionIds
+                                                            .contains(
+                                                                    question.getId()
+                                                            )
+                                            );
+                        })
                         .map(QuizRound::getId)
                         .toList();
 
@@ -366,5 +382,24 @@ public class SQLVerificationService {
                 completedRounds,
                 rows
         );
+    }
+
+    private List<QuizQuestion> getRoundQuestions(
+            QuizRound round
+    ) {
+
+        if (round.getQuestions() != null &&
+                !round.getQuestions().isEmpty()) {
+
+            return round.getQuestions();
+        }
+
+        if (round.getStages() != null &&
+                !round.getStages().isEmpty()) {
+
+            return round.getStages();
+        }
+
+        return List.of();
     }
 }

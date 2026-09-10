@@ -15,13 +15,13 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(
-    name = "question_progress",
-    uniqueConstraints = {
-        @UniqueConstraint(
-            name = "uk_session_question",
-            columnNames = {"session_id", "question_id"}
-        )
-    }
+        name = "question_progress",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_session_question",
+                        columnNames = {"session_id", "question_id"}
+                )
+        }
 )
 public class QuestionProgress {
 
@@ -33,18 +33,33 @@ public class QuestionProgress {
     @JoinColumn(name = "session_id", nullable = false)
     private GameSession session;
 
+    /*
+     * ID of the quiz question.
+     */
     @Column(name = "question_id", nullable = false, length = 20)
     private String questionId;
 
+    /*
+     * Number of times the participant attempted this question.
+     */
     @Column(name = "attempt_count", nullable = false)
     private Integer attemptCount = 0;
 
+    /*
+     * Only a correctly solved question counts toward progression.
+     */
     @Column(nullable = false)
     private Boolean correct = false;
 
+    /*
+     * Total active time spent on this question.
+     */
     @Column(name = "time_taken_ms", nullable = false)
     private Long timeTakenMs = 0L;
 
+    /*
+     * Used when tracking active question time.
+     */
     @Column(name = "active_started_at")
     private LocalDateTime activeStartedAt;
 

@@ -13,111 +13,91 @@ import com.nemo.backend.repository.QuestionProgressRepository;
 @Service
 public class QuizProgressionService {
 
-    private final QuestionProgressRepository questionProgressRepository;
-    private final QuizDataService quizDataService;
+        private final QuestionProgressRepository questionProgressRepository;
+        private final QuizDataService quizDataService;
 
-    public QuizProgressionService(
-            QuestionProgressRepository questionProgressRepository,
-            QuizDataService quizDataService
-    ) {
-        this.questionProgressRepository = questionProgressRepository;
-        this.quizDataService = quizDataService;
-    }
-
-    public boolean isQuestionUnlocked(
-            GameSession session,
-            QuizQuestion question
-    ) {
-
-        int roundId = getQuestionRoundId(question);
-
-        // Round 1 is always unlocked.
-        if (roundId == 1) {
-            return true;
+        public QuizProgressionService(
+                        QuestionProgressRepository questionProgressRepository,
+                        QuizDataService quizDataService) {
+                this.questionProgressRepository = questionProgressRepository;
+                this.quizDataService = quizDataService;
         }
 
-        // Every previous round must be completed.
-        for (int previousRound = 1;
-                previousRound < roundId;
-                previousRound++) {
+        public boolean isQuestionUnlocked(
+                        GameSession session,
+                        QuizQuestion question) {
 
-            if (!isRoundCompleted(session, previousRound)) {
-                return false;
-            }
+                int roundId = getQuestionRoundId(question);
+
+                // Round 1 is always unlocked.
+                if (roundId == 1) {
+                        return true;
+                }
+
+                // Every previous round must be completed.
+                for (int previousRound = 1; previousRound < roundId; previousRound++) {
+
+                        if (!isRoundCompleted(session, previousRound)) {
+                                return false;
+                        }
+                }
+
+                return true;
         }
 
-        return true;
-    }
+        public boolean isRoundCompleted(
+                        GameSession session,
+                        int roundId) {
 
-    public boolean isRoundCompleted(
-            GameSession session,
-            int roundId
-    ) {
+                QuizRound round = quizDataService.getRound(roundId);
 
-        QuizRound round
-                = quizDataService.getRound(roundId);
+                List<QuestionProgress> progressList = questionProgressRepository.findBySession(session);
 
-        List<QuestionProgress> progressList
-                = questionProgressRepository.findBySession(session);
+                List<QuizQuestion> roundQuestions = getRoundQuestions(round);
 
-        List<QuizQuestion> roundQuestions
-                = getRoundQuestions(round);
-
-        return roundQuestions
-                .stream()
-                .allMatch(question
-                        -> progressList.stream()
-                        .anyMatch(progress
-                                -> progress.getQuestionId()
-                                .equals(question.getId())
-                        && Boolean.TRUE.equals(
-                                progress.getCorrect()
-                        )
-                        )
-                );
-    }
-
-    private int getQuestionRoundId(
-            QuizQuestion question
-    ) {
-
-        if (question.getRoundId() != null) {
-            return question.getRoundId();
+                return roundQuestions
+                                .stream()
+                                .allMatch(question -> progressList.stream()
+                                                .anyMatch(progress -> progress.getQuestionId()
+                                                                .equals(question.getId())
+                                                                && Boolean.TRUE.equals(
+                                                                                progress.getCorrect())));
         }
 
-        return quizDataService.getRounds()
-                .stream()
-                .filter(round
-                        -> getRoundQuestions(round)
-                        .stream()
-                        .anyMatch(q
-                                -> q.getId().equals(
-                                question.getId()
-                        )
-                        )
-                )
-                .map(QuizRound::getId)
-                .findFirst()
-                .orElseThrow(()
-                        -> new IllegalArgumentException(
-                        "Question round not found: "
-                        + question.getId()
-                )
-                );
-    }
+        private int getQuestionRoundId(
+                        QuizQuestion question) {
 
-    private List<QuizQuestion> getRoundQuestions(
-            QuizRound round
-    ) {
+                if (question.getRoundId() != null) {
+                        return question.getRoundId();
+                }
 
-        if (round.getQuestions() != null) {
-            return round.getQuestions();
+                return quizDataService.getRounds()
+                                .stream()
+                                .filter(round -> getRoundQuestions(round)
+                                                .stream()
+                                                .anyMatch(q -> q.getId().equals(
+                                                                question.getId())))
+                                .map(QuizRound::getId)
+                                .findFirst()
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "Question round not found: "
+                                                                + question.getId()));
         }
 
-        if (round.getStages() != null) {
-            return round.getStages();
-        }
+        private List<QuizQuestion> getRoundQuestions(QuizRound round) {
 
-        return List.of();
-    }
+                if (round.getQuestions() != null &&
+                                !round.getQuestions().isEmpty()) {
+
+                        return round.getQuestions();
+                }
+
+                if (round.getStages() != null &&
+                                !round.getStages().isEmpty()) {
+
+                        return round.getStages();
+                }
+
+                return List.of();
+        }
 }
