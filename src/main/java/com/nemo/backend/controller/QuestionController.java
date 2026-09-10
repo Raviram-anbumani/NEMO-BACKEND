@@ -99,12 +99,22 @@ public class QuestionController {
                 return ResponseEntity.status(403).build();
             }
 
-            List<QuizQuestion> stages =
-                    round.getStages();
+            List<QuizQuestion> stages;
 
-            if (stages == null || stages.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
+                if (round.getQuestions() != null &&
+                        !round.getQuestions().isEmpty()) {
+
+                stages = round.getQuestions();
+
+                } else if (round.getStages() != null &&
+                        !round.getStages().isEmpty()) {
+
+                stages = round.getStages();
+
+                } else {
+
+                stages = List.of();
+                }
 
             final int stageToReturn = nextStage;
 
